@@ -1,16 +1,34 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
+// import { defineConfig } from 'vite'
+// import react from '@vitejs/plugin-react'
+// import tailwindcss from '@tailwindcss/vite'
+
+// export default defineConfig({
+//   plugins: [tailwindcss(), react()],
+
+//   server: {
+//     watch: {
+//       ignored: [
+//         '**/Data/**',        // ignore your chatbot data folder
+//         '**/ChatLog.json'    // extra safety
+//       ]
+//     }
+//   }
+// })
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
+  base: "/",
+
   plugins: [tailwindcss(), react()],
 
   server: {
     watch: {
       ignored: [
-        '**/Data/**',        // ignore your chatbot data folder
-        '**/ChatLog.json'    // extra safety
-      ]
-    }
-  }
-})
+        "**/Data/**",
+        "**/ChatLog.json"
+      ],
+    },
+  },
+});
