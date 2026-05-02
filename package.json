@@ -3,12 +3,15 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "description": "Developer Portfolio Website with React, Vite, Express, and AI Chatbot",
+  "main": "server.js",
   "scripts": {
     "dev": "vite",
+    "server": "node server.js",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "react-scripts start"
+    "start": "node server.js"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -37,7 +40,6 @@
     "react-on-screen": "^2.1.1",
     "react-router-dom": "^7.14.2",
     "react-router-hash-link": "^2.4.3",
-    "react-scripts": "^5.0.1",
     "three": "^0.184.0",
     "web-vitals": "^5.2.0"
   },
@@ -55,10 +57,8 @@
     "tailwindcss": "^4.1.11",
     "vite": "^7.1.0"
   },
-  "description": "🚀 Developer Portfolio Website – Installation & Deployment Guide",
-  "main": "eslint.config.js",
   "keywords": [],
-  "author": "",
+  "author": "Sparsh Srivastava",
   "license": "ISC",
   "browserslist": {
     "production": [
