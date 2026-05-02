@@ -69,7 +69,7 @@ PROFILE SUMMARY
 
 Sparsh Srivastava is a Computer Science student specializing in Artificial Intelligence and Machine Learning.
 
-He is pursuing Bachelor of Engineering in Computer Science and Engineering with AIML specialization from VIT Bhopal University.
+He is pursuing Bachelor of Engineering in Computer Science with AIML specialization from VIT Bhopal University.
 
 He focuses on practical AI solutions, automation systems, full-stack applications, and real-world problem solving.
 
@@ -90,7 +90,7 @@ EDUCATION
 Bachelor of Engineering in Computer Science and Engineering with Artificial Intelligence and Machine Learning
 Institution: VIT Bhopal University
 Duration: September 2023 – May 2027
-CGPA: 7.96/10.0
+CGPA: 7.96
 
 Higher Secondary and Secondary Education
 Institution: Montfort Inter College, Lucknow
