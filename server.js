@@ -466,11 +466,11 @@ app.post("/api/clear-chat", (req, res) => {
   res.json({ success: true });
 });
 
-// Serve React frontend after build
+// Serve React frontend after Vite build
 app.use(express.static(DIST_DIR));
 
-// React route fallback
-app.get("*", (req, res) => {
+// React route fallback for Express 5
+app.get(/.*/, (req, res) => {
   res.sendFile(path.join(DIST_DIR, "index.html"));
 });
 
