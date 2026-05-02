@@ -1,0 +1,552 @@
+.skills-section {
+  min-height: 100vh;
+  height: 100vh;
+  width: 100%;
+  background: #101010;
+  color: white;
+  overflow: hidden;
+  padding-top: 38px;
+  padding-bottom: 0;
+  position: relative;
+  box-sizing: border-box;
+  isolation: isolate;
+}
+
+.skills-main-content {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  visibility: visible;
+  filter: none;
+  transform: none;
+}
+
+.skill-bg-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 18%, color-mix(in srgb, var(--activeClr) 18%, transparent), transparent 30%),
+    radial-gradient(circle at 20% 52%, color-mix(in srgb, var(--activeClr) 9%, transparent), transparent 25%),
+    radial-gradient(circle at 82% 50%, color-mix(in srgb, var(--activeClr) 9%, transparent), transparent 25%);
+  opacity: 0.62;
+  pointer-events: none;
+  transition:
+    background 1s ease,
+    opacity 1s ease;
+}
+
+.skills-title {
+  text-align: center;
+  font-size: 56px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 5;
+}
+
+.semi-orbit-wrapper {
+  width: 100%;
+  max-width: 1180px;
+  height: calc(100vh - 145px);
+  max-height: 590px;
+  min-height: 520px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  z-index: 5;
+}
+
+.orbit-line {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  pointer-events: none;
+}
+
+.outer-line {
+  width: 1030px;
+  height: 1030px;
+  bottom: -470px;
+}
+
+.inner-line {
+  width: 760px;
+  height: 760px;
+  bottom: -335px;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.semi-orbit {
+  position: absolute;
+  left: 50%;
+  bottom: -470px;
+  width: 1030px;
+  height: 1030px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+}
+
+.skill-point {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 92px;
+  height: 104px;
+  border: none;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  text-align: center;
+  padding: 0;
+
+  transform:
+    rotate(var(--angle))
+    translateX(455px)
+    rotate(calc(-1 * var(--angle)))
+    translate(-46px, -52px);
+
+  transition:
+    transform 2.35s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.65s ease,
+    visibility 0.65s ease;
+
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.hide-skill {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.skill-cube {
+  width: 82px;
+  height: 82px;
+  margin: 0 auto;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.55s ease;
+
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.skill-ball-wrap {
+  position: relative;
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  overflow: visible;
+
+  opacity: 1;
+  transform: translateZ(0) scale(1);
+  animation: smoothBallLoad 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  filter:
+    drop-shadow(0 10px 11px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 0 12px color-mix(in srgb, var(--clr) 30%, transparent));
+
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.white-ball-fallback {
+  position: absolute;
+  inset: 8px;
+  z-index: 0;
+  border-radius: 50%;
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle at 28% 22%,
+      #ffffff 0%,
+      #f7f5ee 16%,
+      transparent 28%
+    ),
+    radial-gradient(circle at 72% 75%,
+      rgba(60, 58, 52, 0.72) 0%,
+      rgba(85, 82, 74, 0.4) 28%,
+      transparent 52%
+    ),
+    linear-gradient(135deg,
+      #ffffff 0%,
+      #e8e6dc 22%,
+      #c9c6ba 42%,
+      #8f8c82 68%,
+      #5c5a52 100%
+    );
+
+  box-shadow:
+    inset -10px -12px 18px rgba(0, 0, 0, 0.38),
+    inset 8px 7px 14px rgba(255, 255, 255, 0.58),
+    0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+
+.skill-ball-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  z-index: 2;
+  pointer-events: none;
+
+  background:
+    linear-gradient(120deg,
+      rgba(255, 255, 255, 0.32),
+      transparent 34%
+    ),
+    linear-gradient(315deg,
+      rgba(0, 0, 0, 0.34),
+      transparent 54%
+    );
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.14),
+    inset -12px -14px 20px rgba(0, 0, 0, 0.36),
+    inset 10px 8px 18px rgba(255, 255, 255, 0.18);
+}
+
+.skill-ball-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border-radius: 50%;
+  z-index: 3;
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle at 28% 20%,
+      rgba(255, 255, 255, 0.58) 0%,
+      rgba(255, 255, 255, 0.2) 15%,
+      transparent 30%
+    );
+}
+
+.skill-ball-wrap canvas {
+  position: relative;
+  z-index: 1;
+  width: 82px !important;
+  height: 82px !important;
+  display: block;
+  border-radius: 50%;
+  opacity: 1;
+
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+}
+
+.skill-ball-wrap canvas:active {
+  cursor: grabbing;
+}
+
+.skill-ball-icon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 10;
+  transform: translate(-50%, -50%);
+  font-size: 34px;
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  pointer-events: none;
+
+  filter:
+    drop-shadow(0 0 4px rgba(0, 0, 0, 0.9))
+    drop-shadow(0 0 9px currentColor);
+}
+
+.skill-point.active .skill-cube {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 16px color-mix(in srgb, var(--clr) 45%, transparent));
+}
+
+.skill-point:hover .skill-cube {
+  transform: scale(1.12);
+}
+
+.skill-point p {
+  margin-top: 5px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffffff;
+
+  text-shadow:
+    0 0 8px var(--clr),
+    0 0 18px color-mix(in srgb, var(--clr) 50%, transparent);
+}
+
+.center-info {
+  position: absolute;
+  left: 50%;
+  bottom: 105px;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: 390px;
+  min-height: 250px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.center-icon-box {
+  width: 145px;
+  height: 145px;
+  background: transparent;
+  color: var(--activeClr);
+  border-radius: 50%;
+  font-size: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+
+  border: none;
+  margin-bottom: 16px;
+  animation: centerPop 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.large-ball {
+  width: 145px;
+  height: 145px;
+
+  filter:
+    drop-shadow(0 18px 20px rgba(0, 0, 0, 0.6))
+    drop-shadow(0 0 26px color-mix(in srgb, var(--activeClr) 38%, transparent));
+}
+
+.large-ball .white-ball-fallback {
+  inset: 13px;
+
+  box-shadow:
+    inset -22px -24px 32px rgba(0, 0, 0, 0.42),
+    inset 16px 14px 24px rgba(255, 255, 255, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.large-ball::before {
+  inset: 10px;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+    inset -24px -26px 34px rgba(0, 0, 0, 0.42),
+    inset 16px 14px 26px rgba(255, 255, 255, 0.2);
+}
+
+.large-ball::after {
+  inset: 12px;
+}
+
+.large-ball canvas {
+  width: 145px !important;
+  height: 145px !important;
+}
+
+.large-ball .skill-ball-icon {
+  font-size: 68px;
+  width: 82px;
+  height: 82px;
+}
+
+.center-info h3 {
+  font-size: 31px;
+  margin-bottom: 8px;
+}
+
+.center-info p {
+  max-width: 340px;
+  text-align: center;
+  color: #d8d8d8;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+@keyframes smoothBallLoad {
+  0% {
+    opacity: 0;
+    transform: translateZ(0) scale(0.9);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateZ(0) scale(1.03);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateZ(0) scale(1);
+  }
+}
+
+@keyframes centerPop {
+  0% {
+    transform: scale(0.88);
+    opacity: 0;
+  }
+
+  60% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 900px) {
+  .skills-section {
+    min-height: 100vh;
+    height: 100vh;
+    padding-top: 34px;
+    padding-bottom: 0;
+  }
+
+  .skills-title {
+    font-size: 42px;
+    margin-bottom: 8px;
+  }
+
+  .semi-orbit-wrapper {
+    height: calc(100vh - 120px);
+    max-height: 500px;
+    min-height: 455px;
+  }
+
+  .outer-line,
+  .semi-orbit {
+    width: 760px;
+    height: 760px;
+    bottom: -350px;
+  }
+
+  .inner-line {
+    width: 560px;
+    height: 560px;
+    bottom: -250px;
+  }
+
+  .skill-point {
+    width: 76px;
+    height: 90px;
+
+    transform:
+      rotate(var(--angle))
+      translateX(335px)
+      rotate(calc(-1 * var(--angle)))
+      translate(-38px, -45px);
+
+    transition:
+      transform 2.35s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.65s ease,
+      visibility 0.65s ease;
+  }
+
+  .skill-cube {
+    width: 66px;
+    height: 66px;
+  }
+
+  .skill-ball-wrap {
+    width: 66px;
+    height: 66px;
+    animation: smoothBallLoad 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .skill-ball-wrap canvas {
+    width: 66px !important;
+    height: 66px !important;
+  }
+
+  .white-ball-fallback {
+    inset: 7px;
+  }
+
+  .skill-ball-wrap::before {
+    inset: 7px;
+  }
+
+  .skill-ball-wrap::after {
+    inset: 8px;
+  }
+
+  .skill-ball-icon {
+    font-size: 28px;
+    width: 34px;
+    height: 34px;
+  }
+
+  .skill-point p {
+    font-size: 10px;
+  }
+
+  .center-info {
+    bottom: 65px;
+    width: 300px;
+  }
+
+  .center-icon-box {
+    width: 112px;
+    height: 112px;
+  }
+
+  .large-ball {
+    width: 112px;
+    height: 112px;
+  }
+
+  .large-ball canvas {
+    width: 112px !important;
+    height: 112px !important;
+  }
+
+  .large-ball .white-ball-fallback {
+    inset: 11px;
+  }
+
+  .large-ball::before {
+    inset: 8px;
+  }
+
+  .large-ball::after {
+    inset: 9px;
+  }
+
+  .large-ball .skill-ball-icon {
+    font-size: 54px;
+    width: 64px;
+    height: 64px;
+  }
+
+  .center-info h3 {
+    font-size: 25px;
+  }
+
+  .center-info p {
+    font-size: 13px;
+  }
+}
