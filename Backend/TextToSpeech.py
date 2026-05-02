@@ -1,10 +1,8 @@
 import asyncio
 import os
 import sys
-from dotenv import dotenv_values
-
 import edge_tts
-from gtts import gTTS
+from dotenv import dotenv_values
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "Data")
@@ -35,34 +33,7 @@ def clean_text(text):
     )
 
 
-async def generate_with_edge_tts(text):
-    print(f"Trying edge-tts voice: {ASSISTANT_VOICE}", flush=True)
-
-    communicate = edge_tts.Communicate(
-        text=text,
-        voice=ASSISTANT_VOICE,
-        rate="+8%",
-        pitch="+3Hz",
-        volume="+0%",
-    )
-
-    await communicate.save(SPEECH_PATH)
-
-
-def generate_with_gtts(text):
-    print("edge-tts failed. Falling back to gTTS...", flush=True)
-
-    tts = gTTS(
-        text=text,
-        lang="en",
-        tld="co.in",
-        slow=False,
-    )
-
-    tts.save(SPEECH_PATH)
-
-
-def generate_speech(text):
+async def generate_speech(text):
     text = clean_text(text)
 
     if not text:
@@ -71,23 +42,53 @@ def generate_speech(text):
     if os.path.exists(SPEECH_PATH):
         os.remove(SPEECH_PATH)
 
-    try:
-        asyncio.run(generate_with_edge_tts(text))
-    except Exception as edge_error:
-        print(f"edge-tts error: {edge_error}", file=sys.stderr, flush=True)
-        generate_with_gtts(text)
+    print(f"Using edge-tts voice: {ASSISTANT_VOICE}", flush=True)
+    print(f"Saving speech to: {SPEECH_PATH}", flush=True)
 
-    if not os.path.exists(SPEECH_PATH):
-        raise FileNotFoundError("speech.mp3 was not created.")
+    last_error = None
 
-    print("Speech generated successfully.", flush=True)
+    for attempt in range(1, 5):
+        try:
+            print(f"edge-tts attempt {attempt}/4", flush=True)
+
+            communicate = edge_tts.Communicate(
+                text=text,
+                voice=ASSISTANT_VOICE,
+                rate="+8%",
+                pitch="+3Hz",
+                volume="+0%",
+                receive_timeout=30,
+            )
+
+            await communicate.save(SPEECH_PATH)
+
+            if os.path.exists(SPEECH_PATH):
+                print("Speech generated successfully.", flush=True)
+                return
+
+            raise FileNotFoundError("speech.mp3 was not created.")
+
+        except Exception as error:
+            last_error = error
+            print(
+                f"edge-tts attempt {attempt} failed: {error}",
+                file=sys.stderr,
+                flush=True,
+            )
+
+            if os.path.exists(SPEECH_PATH):
+                os.remove(SPEECH_PATH)
+
+            await asyncio.sleep(2 * attempt)
+
+    raise RuntimeError(f"edge-tts failed after retries: {last_error}")
 
 
 if __name__ == "__main__":
     text = " ".join(sys.argv[1:]).strip()
 
     try:
-        generate_speech(text)
+        asyncio.run(generate_speech(text))
     except Exception as error:
         print(f"TTS Python Error: {error}", file=sys.stderr, flush=True)
         sys.exit(1)
