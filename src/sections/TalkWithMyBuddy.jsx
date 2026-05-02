@@ -289,8 +289,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./TalkWithMyBuddy.css";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
-
+const API_BASE_URL = import.meta.env.VITE_API_URL || "";
 export default function TalkWithMyBuddy() {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
