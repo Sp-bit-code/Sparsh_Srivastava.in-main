@@ -333,7 +333,7 @@ const projects = [
     duration: "Feb 2026",
     description:
       "Engineered a high-precision Voting Regressor ensemble using HistGradientBoosting, RandomForest, and ExtraTrees with physics-based feature engineering. Built a performance-optimized FastAPI backend to calculate real-time carbon credits using live solar irradiance data from NASA POWER API.",
-    tech: ["Python", "Machine Learning", "FastAPI", "NASA API", "Ensemble ML"],
+    tech: ["Python", "Machine Learning", "FastAPI", "NASA API"],
     image:
       "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1200&auto=format&fit=crop&q=80",
     github: "https://github.com/AR2706/Carbon-Credits-Predictor",
