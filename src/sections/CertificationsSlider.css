@@ -1,6 +1,6 @@
 /* ============================================
    CertificationsSlider.css
-   Fixed 3D carousel visibility + heading spacing
+   Desktop same + Mobile card size fixed
    ============================================ */
 
 .cert-section {
@@ -51,7 +51,7 @@
   width: 230px;
   height: 340px;
   transform-style: preserve-3d;
-  animation: certSpin 28s linear infinite;
+  animation: certSpin 45s linear infinite;
   position: relative;
 }
 
@@ -519,48 +519,71 @@
   }
 }
 
-/* Tablet */
+/* Tablet / Mobile Landscape */
 @media (max-width: 768px) {
   .cert-section {
-    min-height: 670px;
-    padding-bottom: 55px;
+    min-height: 620px;
+    padding-bottom: 45px;
+    overflow: hidden;
   }
 
   .cert-label {
-    font-size: 46px;
-    letter-spacing: -1px;
+    font-size: clamp(36px, 10vw, 48px);
+    letter-spacing: -1.5px;
     padding-top: 22px;
+    line-height: 0.95;
   }
 
   .cert-scene {
-    height: 520px;
-    perspective: 950px;
+    height: 500px;
+    perspective: 1050px;
+    perspective-origin: center center;
+    overflow: hidden;
+    margin-top: 8px;
   }
 
   .cert-slider {
-    width: 210px;
-    height: 330px;
+    width: 170px;
+    height: 270px;
   }
 
   .cert-item {
     transform: rotateY(calc((var(--pos) - 1) * (360deg / var(--quantity))))
-      translateZ(290px);
+      translateZ(245px);
+  }
+
+  .cert-card {
+    border-radius: 19px;
   }
 
   .cert-card-image {
-    height: 140px;
+    height: 108px;
   }
 
   .cert-card-content {
-    padding: 15px;
+    padding: 11px 12px 12px;
   }
 
   .cert-card-content h3 {
-    font-size: 15px;
+    font-size: 13px;
+    line-height: 1.18;
+    margin-bottom: 6px;
+  }
+
+  .cert-card-issuer {
+    font-size: 9.5px;
+    margin-bottom: 8px;
   }
 
   .cert-card-desc {
-    font-size: 11px;
+    font-size: 9.6px;
+    line-height: 1.45;
+    -webkit-line-clamp: 4;
+  }
+
+  .cert-card-link {
+    padding: 7px 9px;
+    font-size: 9.6px;
   }
 
   .cert-modal {
@@ -571,11 +594,12 @@
 
   .cert-modal-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
 
   .cert-modal-img-wrap {
-    min-height: 360px;
-    max-height: 55vh;
+    min-height: 320px;
+    max-height: 52vh;
   }
 
   .cert-modal-body {
@@ -583,69 +607,202 @@
   }
 }
 
-/* Mobile */
+/* Phone */
 @media (max-width: 480px) {
   .cert-section {
-    min-height: 610px;
-    padding-bottom: 45px;
+    min-height: 535px;
+    padding-bottom: 34px;
   }
 
   .cert-label {
-    font-size: 38px;
-    letter-spacing: -1px;
+    font-size: clamp(34px, 11vw, 42px);
+    letter-spacing: -1.2px;
+    padding-top: 30px;
   }
 
   .cert-scene {
-    height: 460px;
-    perspective: 820px;
+    height: 420px;
+    perspective: 850px;
+    overflow: hidden;
+    margin-top: 4px;
   }
 
   .cert-slider {
-    width: 185px;
-    height: 305px;
+    width: 145px;
+    height: 238px;
   }
 
   .cert-item {
     transform: rotateY(calc((var(--pos) - 1) * (360deg / var(--quantity))))
-      translateZ(225px);
+      translateZ(190px);
   }
 
   .cert-card {
-    border-radius: 20px;
+    border-radius: 18px;
   }
 
   .cert-card-image {
-    height: 125px;
+    height: 92px;
   }
 
   .cert-card-content {
-    padding: 13px;
+    padding: 10px;
   }
 
   .cert-card-content h3 {
-    font-size: 13.5px;
+    font-size: 11.7px;
+    line-height: 1.15;
+    margin-bottom: 5px;
   }
 
   .cert-card-issuer {
-    font-size: 10px;
+    font-size: 8.8px;
+    margin-bottom: 7px;
   }
 
   .cert-card-desc {
-    font-size: 10.2px;
-    line-height: 1.48;
-    -webkit-line-clamp: 5;
+    font-size: 8.8px;
+    line-height: 1.4;
+    -webkit-line-clamp: 4;
   }
 
   .cert-card-link {
-    padding: 8px 10px;
-    font-size: 10.5px;
+    padding: 6.5px 8px;
+    font-size: 8.8px;
+  }
+
+  .cert-modal {
+    padding: 14px;
+    border-radius: 20px;
+  }
+
+  .cert-close {
+    top: 10px;
+    right: 10px;
+    width: 34px;
+    height: 34px;
   }
 
   .cert-modal-img-wrap {
-    min-height: 300px;
+    min-height: 255px;
+    max-height: 45vh;
+    border-radius: 16px;
   }
 
   .cert-modal-title {
-    font-size: 27px;
+    font-size: 24px;
+    padding-right: 32px;
+  }
+
+  .cert-modal-desc {
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+}
+
+/* Small Phone */
+@media (max-width: 390px) {
+  .cert-section {
+    min-height: 500px;
+    padding-bottom: 28px;
+  }
+
+  .cert-label {
+    font-size: clamp(32px, 11vw, 38px);
+    padding-top: 28px;
+  }
+
+  .cert-scene {
+    height: 390px;
+    perspective: 780px;
+  }
+
+  .cert-slider {
+    width: 132px;
+    height: 222px;
+  }
+
+  .cert-item {
+    transform: rotateY(calc((var(--pos) - 1) * (360deg / var(--quantity))))
+      translateZ(170px);
+  }
+
+  .cert-card-image {
+    height: 84px;
+  }
+
+  .cert-card-content {
+    padding: 9px;
+  }
+
+  .cert-card-content h3 {
+    font-size: 10.8px;
+  }
+
+  .cert-card-issuer {
+    font-size: 8.2px;
+  }
+
+  .cert-card-desc {
+    font-size: 8.2px;
+    line-height: 1.35;
+    -webkit-line-clamp: 4;
+  }
+
+  .cert-card-link {
+    padding: 6px 7px;
+    font-size: 8.2px;
+  }
+}
+
+/* Very Small Phone */
+@media (max-width: 340px) {
+  .cert-section {
+    min-height: 470px;
+  }
+
+  .cert-label {
+    font-size: 30px;
+  }
+
+  .cert-scene {
+    height: 365px;
+    perspective: 720px;
+  }
+
+  .cert-slider {
+    width: 122px;
+    height: 205px;
+  }
+
+  .cert-item {
+    transform: rotateY(calc((var(--pos) - 1) * (360deg / var(--quantity))))
+      translateZ(155px);
+  }
+
+  .cert-card-image {
+    height: 78px;
+  }
+
+  .cert-card-content {
+    padding: 8px;
+  }
+
+  .cert-card-content h3 {
+    font-size: 10px;
+  }
+
+  .cert-card-issuer {
+    font-size: 7.8px;
+  }
+
+  .cert-card-desc {
+    font-size: 7.8px;
+    -webkit-line-clamp: 3;
+  }
+
+  .cert-card-link {
+    font-size: 7.8px;
+    padding: 5.5px 6px;
   }
 }
