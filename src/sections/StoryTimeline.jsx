@@ -71,42 +71,54 @@ const timelineData = [
   },
 ];
 
-function TimelineNumber({ item, idx, activeIndex, onOpen, mobile = false }) {
+function useIsMobile() {
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkScreen = () => {
+      setIsMobile(window.innerWidth <= 767);
+    };
+
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
+
+  return isMobile;
+}
+
+function TimelineNumber({ item, idx, activeIndex, onOpen }) {
   const isPassed = idx <= activeIndex;
   const isCurrent = idx === activeIndex;
 
   return (
     <button
       type="button"
-      className={`${
-        mobile
-          ? `timeline-mobile-number timeline-mobile-point-${idx + 1}`
-          : `timeline-number timeline-point-${idx + 1}`
-      } ${isPassed ? "timeline-passed" : ""} ${
-        isCurrent ? "timeline-current" : ""
-      }`}
+      className={`timeline-number timeline-point-${idx + 1} ${
+        isPassed ? "timeline-passed" : ""
+      } ${isCurrent ? "timeline-current" : ""}`}
       style={{ "--nodeColor": item.color }}
       onClick={() => onOpen(item)}
       aria-label={`Open ${item.year} timeline details`}
     >
-      {mobile ? item.year : <span>{item.year}</span>}
+      <span>{item.year}</span>
     </button>
   );
 }
 
 export default function MyTimeline() {
   const sceneRef = React.useRef(null);
+  const isMobile = useIsMobile();
 
   const [activeIndex, setActiveIndex] = React.useState(0);
   const [selectedItem, setSelectedItem] = React.useState(null);
 
   const activeIndexRef = React.useRef(0);
 
-  const sceneHeight = 210;
-
   const { scrollYProgress } = useScroll({
     target: sceneRef,
-    offset: ["start start", "end end"],
+    offset: isMobile ? ["start 80%", "end 30%"] : ["start start", "end end"],
   });
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
@@ -115,9 +127,9 @@ export default function MyTimeline() {
     let nextIndex = 0;
 
     if (safeProgress >= 0.08) nextIndex = 0;
-    if (safeProgress >= 0.34) nextIndex = 1;
+    if (safeProgress >= 0.32) nextIndex = 1;
     if (safeProgress >= 0.58) nextIndex = 2;
-    if (safeProgress >= 0.86) nextIndex = 3;
+    if (safeProgress >= 0.82) nextIndex = 3;
 
     if (activeIndexRef.current !== nextIndex) {
       activeIndexRef.current = nextIndex;
@@ -125,9 +137,137 @@ export default function MyTimeline() {
     }
   });
 
-  const snakePathLength = useTransform(scrollYProgress, [0, 0.96], [0, 1]);
+  const snakePathLength = useTransform(
+    scrollYProgress,
+    [0, isMobile ? 0.92 : 0.96],
+    [0, 1]
+  );
 
   const activeItem = timelineData[activeIndex];
+
+  const SnakeTimeline = ({ mobileClass = "" }) => (
+    <div className={`timeline-desktop ${mobileClass}`}>
+      <svg
+        className="timeline-snake-svg"
+        viewBox="0 0 1200 420"
+        preserveAspectRatio="none"
+      >
+        <path
+          className="timeline-snake-base"
+          d="
+            M90 210
+            C190 80, 330 80, 430 210
+            C530 340, 670 340, 770 210
+            C855 100, 980 120, 1010 230
+            C1045 360, 1140 335, 1120 260
+          "
+        />
+
+        <motion.path
+          className="timeline-snake-fill"
+          d="
+            M90 210
+            C190 80, 330 80, 430 210
+            C530 340, 670 340, 770 210
+            C855 100, 980 120, 1010 230
+            C1045 360, 1140 335, 1120 260
+          "
+          style={{ pathLength: snakePathLength }}
+        />
+      </svg>
+
+      <div className="timeline-items-desktop">
+        {timelineData.map((item, idx) => (
+          <TimelineNumber
+            key={item.year}
+            item={item}
+            idx={idx}
+            activeIndex={activeIndex}
+            onOpen={setSelectedItem}
+          />
+        ))}
+      </div>
+    </div>
+  );
+
+  const ModalBox = () => (
+    <AnimatePresence>
+      {selectedItem && (
+        <motion.div
+          className="timeline-modal-backdrop"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setSelectedItem(null)}
+        >
+          <motion.div
+            className="timeline-modal"
+            style={{ "--modalColor": selectedItem.color }}
+            initial={{ scale: 0.9, opacity: 0, y: 45 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.9, opacity: 0, y: 45 }}
+            transition={{ type: "spring", stiffness: 180, damping: 20 }}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="timeline-modal-close"
+              onClick={() => setSelectedItem(null)}
+              aria-label="Close timeline details"
+            >
+              ×
+            </button>
+
+            <span className="timeline-modal-year">{selectedItem.year}</span>
+
+            <h2>{selectedItem.title}</h2>
+            <h4>{selectedItem.subtitle}</h4>
+            <p>{selectedItem.description}</p>
+
+            <div className="timeline-modal-points">
+              {selectedItem.points.map((point, index) => (
+                <div key={index} className="timeline-modal-point">
+                  <span>0{index + 1}</span>
+                  <p>{point}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+
+  if (isMobile) {
+    return (
+      <section
+        id="my-timeline"
+        className="my-timeline-section timeline-mobile-static"
+        style={{
+          "--activeColor": activeItem.color,
+          "--activeBgOne": activeItem.bg1,
+          "--activeBgTwo": activeItem.bg2,
+        }}
+      >
+        <div className="timeline-bg-layer">
+          <div className="timeline-live-gradient" />
+          <div className="timeline-grid-glow" />
+        </div>
+
+        <div ref={sceneRef} className="timeline-mobile-static-inner">
+          <div className="timeline-title-wrapper">
+            <h2 className="timeline-title">My Timeline</h2>
+          </div>
+
+          <div className="timeline-content">
+            <SnakeTimeline mobileClass="timeline-mobile-horizontal" />
+          </div>
+        </div>
+
+        <ModalBox />
+      </section>
+    );
+  }
 
   return (
     <section
@@ -144,152 +284,19 @@ export default function MyTimeline() {
         <div className="timeline-grid-glow" />
       </div>
 
-      <div
-        ref={sceneRef}
-        style={{ height: `${sceneHeight}vh` }}
-        className="timeline-scroll-space"
-      >
+      <div ref={sceneRef} className="timeline-scroll-space">
         <div className="timeline-sticky">
           <div className="timeline-title-wrapper">
             <h2 className="timeline-title">My Timeline</h2>
           </div>
 
           <div className="timeline-content">
-            {/* Desktop / Tablet Snake Timeline */}
-            <div className="timeline-desktop">
-              <svg
-                className="timeline-snake-svg"
-                viewBox="0 0 1200 420"
-                preserveAspectRatio="none"
-              >
-                <path
-                  className="timeline-snake-base"
-                  d="
-                    M90 210
-                    C190 80, 330 80, 430 210
-                    C530 340, 670 340, 770 210
-                    C855 100, 980 120, 1010 230
-                    C1045 360, 1140 335, 1120 260
-                  "
-                />
-
-                <motion.path
-                  className="timeline-snake-fill"
-                  d="
-                    M90 210
-                    C190 80, 330 80, 430 210
-                    C530 340, 670 340, 770 210
-                    C855 100, 980 120, 1010 230
-                    C1045 360, 1140 335, 1120 260
-                  "
-                  style={{ pathLength: snakePathLength }}
-                />
-              </svg>
-
-              <div className="timeline-items-desktop">
-                {timelineData.map((item, idx) => (
-                  <TimelineNumber
-                    key={item.year}
-                    item={item}
-                    idx={idx}
-                    activeIndex={activeIndex}
-                    onOpen={setSelectedItem}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Phone Snake Timeline */}
-            <div className="timeline-mobile">
-              <svg
-                className="timeline-mobile-snake-svg"
-                viewBox="0 0 360 620"
-                preserveAspectRatio="none"
-              >
-                <path
-                  className="timeline-snake-base"
-                  d="
-                    M70 70
-                    C250 55, 255 195, 78 190
-                    C245 205, 260 345, 75 340
-                    C245 355, 255 500, 85 530
-                  "
-                />
-
-                <motion.path
-                  className="timeline-snake-fill"
-                  d="
-                    M70 70
-                    C250 55, 255 195, 78 190
-                    C245 205, 260 345, 75 340
-                    C245 355, 255 500, 85 530
-                  "
-                  style={{ pathLength: snakePathLength }}
-                />
-              </svg>
-
-              <div className="timeline-items-mobile">
-                {timelineData.map((item, idx) => (
-                  <TimelineNumber
-                    key={`${item.year}-mobile`}
-                    item={item}
-                    idx={idx}
-                    activeIndex={activeIndex}
-                    onOpen={setSelectedItem}
-                    mobile
-                  />
-                ))}
-              </div>
-            </div>
+            <SnakeTimeline />
           </div>
         </div>
       </div>
 
-      <AnimatePresence>
-        {selectedItem && (
-          <motion.div
-            className="timeline-modal-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelectedItem(null)}
-          >
-            <motion.div
-              className="timeline-modal"
-              style={{ "--modalColor": selectedItem.color }}
-              initial={{ scale: 0.9, opacity: 0, y: 45 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 45 }}
-              transition={{ type: "spring", stiffness: 180, damping: 20 }}
-              onClick={(event) => event.stopPropagation()}
-            >
-              <button
-                type="button"
-                className="timeline-modal-close"
-                onClick={() => setSelectedItem(null)}
-                aria-label="Close timeline details"
-              >
-                ×
-              </button>
-
-              <span className="timeline-modal-year">{selectedItem.year}</span>
-
-              <h2>{selectedItem.title}</h2>
-              <h4>{selectedItem.subtitle}</h4>
-              <p>{selectedItem.description}</p>
-
-              <div className="timeline-modal-points">
-                {selectedItem.points.map((point, index) => (
-                  <div key={index} className="timeline-modal-point">
-                    <span>0{index + 1}</span>
-                    <p>{point}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <ModalBox />
     </section>
   );
 }
