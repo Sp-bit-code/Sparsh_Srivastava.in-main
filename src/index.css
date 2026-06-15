@@ -1,10 +1,17 @@
 @import "tailwindcss";
 
-
 @keyframes gradientBG {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% { 
+    background-position: 0% 50%; 
+  }
+
+  50% { 
+    background-position: 100% 50%; 
+  }
+
+  100% { 
+    background-position: 0% 50%; 
+  }
 }
 
 .animate-gradient {
@@ -23,9 +30,11 @@
     0% {
       background-position: 0% 50%;
     }
+
     50% {
       background-position: 100% 50%;
     }
+
     100% {
       background-position: 0% 50%;
     }
@@ -33,14 +42,28 @@
 }
 
 /* Delay utilities for staggered animations */
-.delay-200 { transition-delay: 200ms; }
-.delay-300 { transition-delay: 300ms; }
-.delay-400 { transition-delay: 400ms; }
+.delay-200 { 
+  transition-delay: 200ms; 
+}
 
+.delay-300 { 
+  transition-delay: 300ms; 
+}
+
+.delay-400 { 
+  transition-delay: 400ms; 
+}
 
 @keyframes fadeInUp {
-  0% { opacity: 0; transform: translateY(20px) scale(0.95); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
+  0% { 
+    opacity: 0; 
+    transform: translateY(20px) scale(0.95); 
+  }
+
+  100% { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+  }
 }
 
 .animate-fadeInUp {
@@ -49,19 +72,127 @@
 }
 
 @keyframes floating {
-  0% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-8px) rotate(0.5deg); }
-  100% { transform: translateY(0px) rotate(0deg); }
+  0% { 
+    transform: translateY(0px) rotate(0deg); 
+  }
+
+  50% { 
+    transform: translateY(-8px) rotate(0.5deg); 
+  }
+
+  100% { 
+    transform: translateY(0px) rotate(0deg); 
+  }
 }
 
 .floating-card {
   animation: floating 4s ease-in-out infinite;
 }
 
-
+/* ================= SAFE MOBILE FIX ONLY ================= */
 
 @media (max-width: 640px) {
+  html,
+  body,
+  #root {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  img,
+  video,
+  canvas {
+    max-width: 100%;
+  }
+
+  /* Do not touch skills/cards/layout sections */
   body > *:not(#contact):not(footer) {
     overflow-x: clip;
+  }
+}
+
+/* ================= FOOTER MOBILE FIX ONLY ================= */
+
+@media (max-width: 640px) {
+  footer {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  footer > div {
+    width: 100%;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+  }
+
+  footer h1,
+  footer h2,
+  footer h3,
+  footer .footer-title,
+  footer .footer-name {
+    width: 100%;
+    max-width: 100%;
+    font-size: clamp(2rem, 11vw, 3rem) !important;
+    line-height: 1.05 !important;
+    letter-spacing: -0.04em;
+    white-space: normal !important;
+    overflow-wrap: normal;
+    word-break: normal;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  footer p {
+    width: 100%;
+    max-width: 330px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  footer a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  footer svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (max-width: 380px) {
+  footer h1,
+  footer h2,
+  footer h3,
+  footer .footer-title,
+  footer .footer-name {
+    font-size: clamp(1.8rem, 10.5vw, 2.5rem) !important;
+  }
+
+  footer p {
+    max-width: 300px;
+    font-size: 0.9rem;
+  }
+
+  footer svg {
+    width: 22px;
+    height: 22px;
   }
 }
