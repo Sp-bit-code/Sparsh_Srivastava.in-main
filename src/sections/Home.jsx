@@ -24,7 +24,7 @@ const socials = [
   {
     Icon: SiLeetcode,
     label: "LeetCode",
-    href: "https://leetcode.com/u/Sparsh_23/",
+    href: "https://leetcode.com/u/sp_02arsh_/",
   },
 ];
 
