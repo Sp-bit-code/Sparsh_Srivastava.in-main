@@ -180,7 +180,7 @@
 //     ];
 
 //     const completion = await groq.chat.completions.create({
-//       model: "llama-3.1-8b-instant",
+//       model: "openai/gpt-oss-120b",
 //       messages,
 //       temperature: 0.7,
 //       max_completion_tokens: 1024,
@@ -421,7 +421,7 @@
 //     ];
 
 //     const completion = await groq.chat.completions.create({
-//       model: "llama-3.1-8b-instant",
+//       model: "openai/gpt-oss-120b",
 //       messages,
 //       temperature: 0.7,
 //       max_completion_tokens: 1024,
@@ -704,7 +704,7 @@ ${details}
     ];
 
     const completion = await groq.chat.completions.create({
-      model: "llama-3.1-8b-instant",
+      model: "openai/gpt-oss-120b",
       messages,
       temperature: 0.7,
       max_completion_tokens: 1024,
